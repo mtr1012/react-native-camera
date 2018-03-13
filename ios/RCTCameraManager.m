@@ -850,7 +850,12 @@ didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
 																		PHFetchResult *phAssetFetchResult = [PHAsset fetchAssetsWithALAssetURLs:@[url] options:nil];
 																		PHAsset *result = phAssetFetchResult.firstObject;
 																		NSString *uri = [NSString stringWithFormat:@"file://%@",result.localIdentifier];
-																		
+                                      
+                                      NSString *identifier = [result.localIdentifier componentsSeparatedByString:@"/"].firstObject;
+                                      
+                                      NSString *thumbnail = [NSString stringWithFormat:@"assets-library://asset/asset.MP4?id=%@&ext=MP4",identifier];
+                                      
+									[videoInfo setObject:thumbnail forKey:@"thumbnail"];
                                     [videoInfo setObject:uri forKey:@"path"];
                                     self.videoResolve(videoInfo);
                                   }];
