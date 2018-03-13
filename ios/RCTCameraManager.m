@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <ImageIO/ImageIO.h>
 #import "RCTSensorOrientationChecker.h"
+#import <Photos/Photos.h>
 
 @interface RCTCameraManager ()
 
@@ -838,13 +839,19 @@ didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL
                                       self.videoReject(RCTErrorUnspecified, nil, RCTErrorWithMessage(error.description));
                                       return;
                                     }
-																		
 																		NSString *path = [assetURL absoluteString];
 																		if (!path) {
 																			self.videoReject(RCTErrorUnspecified, nil, RCTErrorWithMessage(@"Unknown Error"));
 																			return;
 																		}
-                                    [videoInfo setObject: path forKey:@"path"];
+																		
+																		NSURL* url = [NSURL URLWithString: path];
+
+																		PHFetchResult *phAssetFetchResult = [PHAsset fetchAssetsWithALAssetURLs:@[url] options:nil];
+																		PHAsset *result = phAssetFetchResult.firstObject;
+																		NSString *uri = [NSString stringWithFormat:@"file://%@",result.localIdentifier];
+																		
+                                    [videoInfo setObject:uri forKey:@"path"];
                                     self.videoResolve(videoInfo);
                                   }];
     }
