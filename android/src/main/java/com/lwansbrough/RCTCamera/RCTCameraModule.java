@@ -285,7 +285,12 @@ public class RCTCameraModule extends ReactContextBaseJavaModule
 
         // Adjust for orientation.
         // mMediaRecorder.setOrientationHint(RCTCamera.getInstance().getAdjustedDeviceOrientation());
-        switch (deviceOrientation) {
+
+
+        if (options.getInt("type") == RCT_CAMERA_TYPE_FRONT && deviceOrientation == 0) {//Front camera use default behavior of library
+          mMediaRecorder.setOrientationHint(RCTCamera.getInstance().getAdjustedDeviceOrientation());
+        } else {//Back camera => adjust orientation
+          switch (deviceOrientation) {
             case 0: mMediaRecorder.setOrientationHint(90);
               break;
             case 1: mMediaRecorder.setOrientationHint(0);
@@ -294,6 +299,7 @@ public class RCTCameraModule extends ReactContextBaseJavaModule
               break;
             case 3: mMediaRecorder.setOrientationHint(180);
               break;
+          }
         }
 
         // Set video output format and encoding using CamcorderProfile.
