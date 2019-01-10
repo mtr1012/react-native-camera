@@ -166,6 +166,12 @@ RCT_CUSTOM_VIEW_PROPERTY(captureQuality, NSInteger, RCTCamera) {
   [self setCaptureQuality:qualityString];
 }
 
+RCT_CUSTOM_VIEW_PROPERTY(zoom, NSNumber, RCTCamera)
+{
+    [view setZoom:[RCTConvert CGFloat:json]];
+    [view updateZoom];
+}
+
 RCT_CUSTOM_VIEW_PROPERTY(aspect, NSInteger, RCTCamera) {
   NSInteger aspect = [RCTConvert NSInteger:json];
   NSString *aspectString;

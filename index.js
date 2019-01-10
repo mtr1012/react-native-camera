@@ -20,6 +20,14 @@ function convertNativeProps(props) {
     newProps.aspect = Camera.constants.Aspect[props.aspect];
   }
 
+  if (typeof props.zoom === 'string' || typeof props.zoom === 'number') {
+    if (props.zoom >= 0 && props.zoom <= 100) {
+      newProps.zoom = parseFloat(props.zoom);
+      console.log('zoom:',props.zoom)
+      console.log('newPropsZoom:',newProps.zoom)
+    }
+  }
+
   if (typeof props.flashMode === 'string') {
     newProps.flashMode = Camera.constants.FlashMode[props.flashMode];
   }
@@ -69,7 +77,8 @@ export default class Camera extends Component {
     CaptureQuality: CameraManager.CaptureQuality,
     Orientation: CameraManager.Orientation,
     FlashMode: CameraManager.FlashMode,
-    TorchMode: CameraManager.TorchMode
+    TorchMode: CameraManager.TorchMode,
+    Zoom: CameraManager.Zoom,
   };
 
   static propTypes = {
@@ -116,7 +125,8 @@ export default class Camera extends Component {
     type: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number
-    ])
+    ]),
+    zoom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
 
   static defaultProps = {
@@ -134,6 +144,7 @@ export default class Camera extends Component {
     torchMode: CameraManager.TorchMode.off,
     mirrorImage: false,
     barCodeTypes: Object.values(CameraManager.BarCodeType),
+    zoom: 0,
   };
 
   static checkDeviceAuthorizationStatus = CameraManager.checkDeviceAuthorizationStatus;

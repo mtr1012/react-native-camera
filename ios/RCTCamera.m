@@ -170,6 +170,24 @@
 
 }
 
+- (void)updateZoom {
+    AVCaptureDevice *device = [self.manager.videoCaptureDeviceInput device];
+    NSError *error = nil;
+    
+    if (![device lockForConfiguration:&error]) {
+        if (error) {
+            RCTLogError(@"%s: %@", __func__, error);
+        }
+        return;
+    }
+    
+    CGFloat value = self.zoom * 15;
+    device.videoZoomFactor = value >= 1.0 ? value : 1;
+    NSLog(@"%f",device.videoZoomFactor);
+    
+    [device unlockForConfiguration];
+}
+
 
 -(void) handlePinchToZoomRecognizer:(UIPinchGestureRecognizer*)pinchRecognizer {
     if (!_onZoomChanged) return;
