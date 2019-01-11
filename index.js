@@ -23,8 +23,6 @@ function convertNativeProps(props) {
   if (typeof props.zoom === 'string' || typeof props.zoom === 'number') {
     if (props.zoom >= 0 && props.zoom <= 100) {
       newProps.zoom = parseFloat(props.zoom);
-      console.log('zoom:',props.zoom)
-      console.log('newPropsZoom:',newProps.zoom)
     }
   }
 

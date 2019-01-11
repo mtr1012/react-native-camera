@@ -181,10 +181,15 @@
         return;
     }
     
-    CGFloat value = self.zoom * 15;
-    device.videoZoomFactor = value >= 1.0 ? value : 1;
-    NSLog(@"%f",device.videoZoomFactor);
+    CGFloat zoomFactor = self.zoom;
     
+    if (zoomFactor > device.activeFormat.videoMaxZoomFactor) {
+        zoomFactor = device.activeFormat.videoMaxZoomFactor;
+    } else if (zoomFactor < 1) {
+        zoomFactor = 1.0f;
+    }
+    
+    device.videoZoomFactor = zoomFactor;
     [device unlockForConfiguration];
 }
 
